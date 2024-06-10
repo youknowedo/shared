@@ -1,6 +1,6 @@
 {
 	"name": "@youknowedo/shared",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"license": "MIT",
 	"dependencies": {
 		"@lucia-auth/adapter-drizzle": "^1.0.7",
