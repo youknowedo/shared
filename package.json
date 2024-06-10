@@ -1,5 +1,5 @@
 {
-	"name": "shared",
+	"name": "@youknowedo/shared",
 	"version": "0.1.0",
 	"scripts": {
 		"dev": "bunx --bun vite dev",
