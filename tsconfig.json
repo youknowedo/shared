@@ -1,5 +1,6 @@
 {
 	"extends": "./.svelte-kit/tsconfig.json",
+	"include": ["drizzle.config.ts"],
 	"compilerOptions": {
 		"allowJs": true,
 		"checkJs": true,
