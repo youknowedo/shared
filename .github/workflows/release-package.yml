@@ -26,6 +26,8 @@ jobs:
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
+          registry-url: https://npm.pkg.github.com/
+          scope: '@youknowedo'
       - run: bun install --frozen-lockfile
       - run: npm publish
         env:
