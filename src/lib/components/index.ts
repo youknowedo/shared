@@ -1,2 +1,2 @@
-export * from './login';
-export * from './signUp';
+export { Login } from './login';
+export { SignUp } from './signUp';
