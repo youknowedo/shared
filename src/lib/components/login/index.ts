@@ -1,2 +1,2 @@
-import Login from '../signUp/component.svelte';
+import Login from './component.svelte';
 export { Login };
