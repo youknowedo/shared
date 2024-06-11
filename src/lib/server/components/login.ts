@@ -1,28 +1,31 @@
-import { db, users } from '$lib/server';
-import { isValidEmail, lucia } from '$lib/server/auth';
 import { fail, redirect, type Action } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import { db, users } from '..';
+import { formSchema } from '../../components/login/schema';
+import { isValidEmail, lucia } from '../auth';
+import type { PageServerLoad } from './$types';
+
+export const loginServerLoad: PageServerLoad = async () => {
+	return {
+		form: await superValidate(zod(formSchema))
+	};
+};
 
 export const loginAction: Action = async (event) => {
-	const formData = await event.request.formData();
-	const email = formData.get('email');
-	const password = formData.get('password');
-
-	if (typeof email !== 'string' || !isValidEmail(email)) {
+	const form = await superValidate(event, zod(formSchema));
+	if (!form.valid) {
 		return fail(400, {
-			message: 'Invalid email'
-		});
-	}
-	if (typeof password !== 'string' || password.length < 6 || password.length > 255) {
-		return fail(400, {
-			message: 'Invalid password'
+			form
 		});
 	}
 
-	const existingUser = await db
-		.select()
-		.from(users)
-		.where(eq(users.email, email.toLowerCase()))?.[0];
+	const { email, password } = form.data;
+
+	const existingUser = (
+		await db.select().from(users).where(eq(users.email, email.toLowerCase()))
+	)?.[0];
 
 	if (!existingUser) {
 		// NOTE:
@@ -39,7 +42,8 @@ export const loginAction: Action = async (event) => {
 		});
 	}
 
-	const validPassword = await Bun.password.verify(existingUser.password_hash, password, 'argon2id');
+	const validPassword = await Bun.password.verify(password, existingUser.passwordHash, 'argon2id');
+
 	if (!validPassword) {
 		return fail(400, {
 			message: 'Incorrect email or password'

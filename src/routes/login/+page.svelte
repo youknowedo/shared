@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { Login } from '$lib/components/index.js';
+	import { Login } from '$lib/components/login/index.js';
+
+	export let data;
 </script>
 
-<Login></Login>
+<Login data={data.form}></Login>

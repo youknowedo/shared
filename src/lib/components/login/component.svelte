@@ -1,12 +1,36 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import * as Form from '$lib/components/ui/form';
+	import { Input } from '$lib/components/ui/input';
+	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
+	import { zodClient } from 'sveltekit-superforms/adapters';
+	import '../../../app.css';
+	import { formSchema, type FormSchema } from './schema.js';
+
+	export let data: SuperValidated<Infer<FormSchema>>;
+
+	const form = superForm(data, {
+		validators: zodClient(formSchema)
+	});
+
+	const { form: formData, enhance } = form;
 </script>
 
-<h1>Sign in</h1>
-<form method="post" use:enhance>
-	<label for="email">Email</label>
-	<input name="email" id="email" /><br />
-	<label for="password">Password</label>
-	<input type="password" name="password" id="password" /><br />
-	<button>Continue</button>
+<h1>Log in</h1>
+
+<form method="POST" use:enhance>
+	<Form.Field {form} name="email">
+		<Form.Control let:attrs>
+			<Form.Label>Email</Form.Label>
+			<Input {...attrs} type="email" bind:value={$formData.email} />
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+	<Form.Field {form} name="password">
+		<Form.Control let:attrs>
+			<Form.Label>Password</Form.Label>
+			<Input {...attrs} type="password" bind:value={$formData.password} />
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+	<Form.Button>Submit</Form.Button>
 </form>
