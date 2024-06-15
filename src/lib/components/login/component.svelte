@@ -3,7 +3,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import '../../../app.css';
+	import '../../styles.css';
 	import { formSchema, type FormSchema } from './schema.js';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
