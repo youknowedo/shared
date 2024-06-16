@@ -42,6 +42,4 @@ export const signUpAction: Action = async (event) => {
 		path: '.',
 		...sessionCookie.attributes
 	});
-
-	redirect(302, '/');
 };

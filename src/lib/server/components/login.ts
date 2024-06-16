@@ -56,6 +56,4 @@ export const loginAction: Action = async (event) => {
 		path: '.',
 		...sessionCookie.attributes
 	});
-
-	redirect(302, '/');
 };
